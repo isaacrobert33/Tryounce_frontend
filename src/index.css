@@ -1,0 +1,105 @@
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  body {
+    @apply satoshi;
+  }
+}
+
+.satoshi {
+  font-family: satoshi;
+  font-display: swap;
+}
+
+.setting {
+  @apply w-full max-w-[20rem] sm:max-w-[22rem] md:max-w-[24rem] lg:max-w-[26rem] xl:max-w-[30rem];
+}
+
+@font-face {
+  font-family: satoshi;
+  src: url(./assets/fonts/Satoshi-Medium.otf);
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Styling checkbox */
+.custom-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #10953b; /* Green border */
+  border-radius: 50%; /* Circle shape */
+  background-color: #ffffff; /* White background */
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+.custom-checkbox:checked {
+  background-color: #fff; /* White background on check */
+  border: 1px solid #10953b; /* #10953b border on check */
+}
+
+/* Dot styling for checked state */
+.custom-checkbox:checked::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background-color: green;
+  border-radius: 50%; /* Make dot circular */
+  transform: translate(-50%, -50%);
+  box-shadow:
+    1px 1px 3px rgba(0, 0, 0, 0.3),
+    -1px -1px 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Styling checkbox */
+.login-checkbox {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid #10953b; /* Green border */
+  background-color: #ffffff; /* White background */
+  position: relative;
+  cursor: pointer;
+  outline: none;
+  border-radius: 0;
+}
+/* 
+.login-checkbox:checked {
+  background-color: #fff;
+  border: 1px solid #10953b;
+  border-radius: 0;
+}
+
+
+.login-checkbox:checked::before {
+  content: "✓";
+  background-color: #fff;
+  color: green; 
+  border: 1px solid #10953b;
+  position: absolute;
+  box-shadow: none;
+  width: 12px;
+  height: 12px;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 0;
+} */
