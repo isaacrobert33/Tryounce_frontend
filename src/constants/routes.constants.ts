@@ -1,4 +1,4 @@
-//  List of routed in the component
+//  List of routes in the Application
 
 export const APP_ROUTES = {
   Home: "/",
@@ -7,4 +7,10 @@ export const APP_ROUTES = {
   Login: "/login",
   ForgotPassword: "/forgot-password",
   EmailVerificationForgotPassword: "/email-verification",
+  MessageVerification: "/message-verification",
+  NewPassword: "/set-new-password",
+  PasswordResetSuccessful: "/password-reset-successful",
+  EmailVerificationCreateAccount: "/verify-email",
+  FaceVerification: "/face-verification",
+  FaceVerificationProcess: "/face-verification-processing",
 };

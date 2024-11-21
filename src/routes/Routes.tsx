@@ -2,11 +2,17 @@ import { APP_ROUTES } from "../constants/routes.constants";
 import SuspenseLayout from "../layouts/SuspenseLayout";
 import {
   CreateAccount,
+  EmailVerificationCreateAccount,
   EmailVerificationPassword,
+  FaceVerification,
+  FaceVerificationProcess,
   ForgotPassword,
   Home,
   Login,
+  MessageVerification,
+  NewPassword,
   Onboarding,
+  PasswordResetSuccessful,
 } from "../pages/index";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -27,6 +33,27 @@ export default function RoutesSwitches() {
           <Route
             path={APP_ROUTES.EmailVerificationForgotPassword}
             element={<EmailVerificationPassword />}
+          />
+          <Route
+            path={APP_ROUTES.MessageVerification}
+            element={<MessageVerification />}
+          />
+          <Route path={APP_ROUTES.NewPassword} element={<NewPassword />} />
+          <Route
+            path={APP_ROUTES.PasswordResetSuccessful}
+            element={<PasswordResetSuccessful />}
+          />
+          <Route
+            path={APP_ROUTES.EmailVerificationCreateAccount}
+            element={<EmailVerificationCreateAccount />}
+          />
+          <Route
+            path={APP_ROUTES.FaceVerification}
+            element={<FaceVerification />}
+          />
+          <Route
+            path={APP_ROUTES.FaceVerificationProcess}
+            element={<FaceVerificationProcess />}
           />
         </Route>
       </Routes>
