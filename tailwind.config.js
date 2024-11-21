@@ -23,6 +23,7 @@ export default {
         white: "#ffffff",
         grey: "#6F7376",
         "grey-100": "#858585",
+        "grey-200": "#5E6164",
         black: "#000000",
         "black-800": "#1A1A1A",
       },

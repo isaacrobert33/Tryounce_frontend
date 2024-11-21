@@ -11,7 +11,7 @@ export default function Logo() {
         navigateToHome();
       }}
     >
-      <img src={OunceLogo} alt="Ounce Logo" />
+      <img src={OunceLogo} alt="Ounce Logo" width={100} />
     </div>
   );
 }

@@ -12,3 +12,20 @@ export const ForgotPassword = lazy(
 export const EmailVerificationPassword = lazy(
   () => import("./EmailVerificationForgotPassword/EmailVerificationPassword")
 );
+export const MessageVerification = lazy(
+  () => import("./MessageVerification/MessageVerification")
+);
+export const NewPassword = lazy(() => import("./NewPassword/NewPassword"));
+export const PasswordResetSuccessful = lazy(
+  () => import("./PasswordResetSuccessful/PasswordResetSuccessful")
+);
+export const EmailVerificationCreateAccount = lazy(
+  () =>
+    import("./EmailVerificationCreateAccount/EmailVerificationCreateAccount")
+);
+export const FaceVerification = lazy(
+  () => import("./FaceVerification/FaceVerification")
+);
+export const FaceVerificationProcess = lazy(
+  () => import("./FaceVerification/FaceVerificationProcess")
+);
