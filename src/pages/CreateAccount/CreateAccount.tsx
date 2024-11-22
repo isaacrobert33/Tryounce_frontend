@@ -1,5 +1,6 @@
 import { AppleIcon, CallIcon, GoogleIcon } from "../../assets/svgs/index";
 import { useForm } from "react-hook-form";
+import axios from 'axios'
 import {
   AuthenticationButton,
   BtnText,
@@ -14,6 +15,7 @@ import { useState } from "react";
 import useAppNavigation from "../../hooks/navigation/useAppNavigation";
 
 interface FormValues {
+  email:string,
   phoneNumber: string;
   password: string;
   isIndividual: boolean;
@@ -39,7 +41,23 @@ export default function CreateAccount() {
       setCheckboxError("Only one option can be selected.");
     } else {
       setCheckboxError(null);
-      console.log("Form Submitted:", data);
+       // API endpoint to create an account
+      const apiEndpoint = "https://ounce-backend.onrender.com/api/v1/auth/register/client/";
+
+  axios
+    .post(apiEndpoint, {
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      password: data.password,
+    },{headers:{"Content-Type" : "Application-type" }})
+    .then((response) => {
+      console.log("Account created successfully:", response.data);
+      // Redirect or show success message
+    })
+    .catch((error) => {
+      console.error("Error creating account:", error.response?.data || error.message);
+      // Show error feedback
+    });
     }
   }
 
@@ -130,6 +148,24 @@ export default function CreateAccount() {
 
             <Divider />
 
+
+            <Input
+              name="Email"
+              label="email"
+              placeholder="Email"
+              register={register}
+              type="email"
+              htmlFor="email"
+              rules={{
+                required: "Email is required.",
+                pattern: {
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  message: "Please enter a valid email address.",
+                },
+              }}
+
+              errors={errors}
+            />
             <Input
               name="phoneNumber"
               label="Phone Number"
@@ -181,6 +217,7 @@ export default function CreateAccount() {
               }}
               errors={errors}
             />
+
 
             <Button type="submit" className="bg-green-200">
               Create Account
