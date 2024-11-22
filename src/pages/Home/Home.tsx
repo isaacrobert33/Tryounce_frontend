@@ -1,7 +1,7 @@
 import { HomePageVideo } from "../../assets/videos/index";
 import { GifImg } from "../../assets/gif/index";
 import { UsersIcon } from "../../assets/svgs/index";
-import { JobPageScreenShot } from "../../assets/pngs/index";
+import { HowItWorksBg, JobPageScreenShot } from "../../assets/pngs/index";
 import {
   FAQs,
   Footer,
@@ -56,7 +56,10 @@ export default function Home() {
 
       <FAQs />
 
-      <section className="container bg-black py-20">
+      <section
+        className="container bg-center bg-cover py-20"
+        style={{ backgroundImage: `url(${HowItWorksBg})` }}
+      >
         <div className="flex flex-col items-start gap-10 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-col gap-5 ">
             <div className="flex items-center gap-1">
