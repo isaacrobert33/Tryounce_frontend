@@ -108,14 +108,14 @@ export const popularService = [
   { icon: GraphicsDesignIcon, service: "Graphic Design" },
   { icon: MotionGraphicsIcon, service: "Motion Graphics" },
   { icon: DigitalMarketingIcon, service: "Digital Marketing" },
-  { icon: WebDevIcon, service: "Web Development" },
-  { icon: GraphicsDesignIcon, service: "Graphic Design" },
-  { icon: MotionGraphicsIcon, service: "Motion Graphics" },
-  { icon: DigitalMarketingIcon, service: "Digital Marketing" },
-  { icon: WebDevIcon, service: "Web Development" },
-  { icon: GraphicsDesignIcon, service: "Graphic Design" },
-  { icon: MotionGraphicsIcon, service: "Motion Graphics" },
-  { icon: DigitalMarketingIcon, service: "Digital Marketing" },
+  { icon: WebDevIcon, service: "Web Design" },
+  { icon: GraphicsDesignIcon, service: "CyberSecurity" },
+  { icon: MotionGraphicsIcon, service: "Product Design" },
+  { icon: DigitalMarketingIcon, service: "Data Analysis" },
+  { icon: WebDevIcon, service: "UI/UX Design" },
+  { icon: GraphicsDesignIcon, service: "WordPress Development" },
+  { icon: MotionGraphicsIcon, service: "Machine Learning" },
+  { icon: DigitalMarketingIcon, service: "Artificial Intelligence" },
 ];
 
 export const howItWorks = [
@@ -136,5 +136,33 @@ export const howItWorks = [
     title: "Easy Hiring & Payments",
     description:
       "Ounce provides integrated contract management and secure payment options, so you can hire and pay freelancers without complications.",
+  },
+];
+
+export const accordions = [
+  {
+    title: "How do I create a freelancer profile?",
+    content:
+      "Freelancer as your account type, and filling out your profile with skills, portfolio samples, and experience.",
+  },
+  {
+    title: "How do I find projects that match my skills?",
+    content:
+      "Freelancer as your account type, and filling out your profile with skills, portfolio samples, and experience.",
+  },
+  {
+    title: "What is the payment process on Ounce?",
+    content:
+      "Freelancer as your account type, and filling out your profile with skills, portfolio samples, and experience.",
+  },
+  {
+    title: "Can I negotiate rates with clients?",
+    content:
+      "Freelancer as your account type, and filling out your profile with skills, portfolio samples, and experience.",
+  },
+  {
+    title: "How does Ounce handle disputes?",
+    content:
+      "Freelancer as your account type, and filling out your profile with skills, portfolio samples, and experience.",
   },
 ];

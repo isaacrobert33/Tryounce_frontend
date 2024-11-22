@@ -19,3 +19,4 @@ export { default as SpecialHeading } from "./SpecialHeading/SpecialHeading";
 export { default as HowItWorks } from "./HowItWorks/HowItWorks";
 export { default as Hero } from "./Hero/Hero";
 export { default as FAQs } from "./FAQs/FAQs";
+export { default as Accordion } from "./Accordion/Accordion";

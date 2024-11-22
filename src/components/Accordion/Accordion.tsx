@@ -17,7 +17,7 @@ export default function Accordion({
     setIsOpen(!isOpen);
   };
   return (
-    <div className={`border border-gray-300 rounded-md ${className || ""}`}>
+    <div className={`border-b border-[#DADADA] rounded-md ${className || ""}`}>
       <div
         className="flex justify-between items-center px-4 py-2 cursor-pointer bg-white"
         onClick={toggleAccordion}
@@ -34,6 +34,7 @@ export default function Accordion({
           {isOpen ? "-" : "+"}
         </button>
       </div>
+      {isOpen && <div className="p-4 text-[#565656] text-base">{content}</div>}
     </div>
   );
 }

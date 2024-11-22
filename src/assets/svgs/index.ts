@@ -25,3 +25,4 @@ export { default as GraphicsDesignIcon } from "./graphics_design_icon.svg";
 export { default as MotionGraphicsIcon } from "./motion_graphics_icon.svg";
 export { default as DigitalMarketingIcon } from "./digital_marketing_icon.svg";
 export { default as JobPageScreenShot } from "./job_page_ss.svg";
+export { default as Favicon } from "./Favicon.svg";
