@@ -37,19 +37,25 @@ export default function Header() {
     enablePageScroll();
   }
 
+  const handleClick = () => {
+    // if (!openNavigation) return;
+
+    enablePageScroll();
+    setOpenNavigation(false);
+  };
   return (
     <div className="fixed top-0 left-0 right-0 flex items-center justify-center z-20 bg-white border  border-[#D2D2D2]">
       <header className="container py-4 flex items-center justify-between">
         <Logo />
         <nav className="hidden lg:flex items-center gap-5 lg:gap-7">
           {navLinks.map((nav, index) => (
-            <Link
+            <a
               key={index}
-              to={nav.path}
+              href={nav.path}
               className="text-grey-200 font-normal text-base"
             >
               {nav.pathname}
-            </Link>
+            </a>
           ))}
         </nav>
         <div className="flex items-center gap-5 lg:gap-10">
@@ -91,13 +97,14 @@ export default function Header() {
 
           <nav className="flex flex-col items-center mt-[10rem] space-y-8 w-full">
             {navLinks.map((nav, index) => (
-              <Link
+              <a
                 key={index}
-                to={nav.path}
+                href={nav.path}
                 className="text-grey-200 font-normal text-base"
+                onClick={handleClick}
               >
                 {nav.pathname}
-              </Link>
+              </a>
             ))}
 
             <Link to="" className="text-black text-base">

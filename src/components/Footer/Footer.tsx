@@ -6,7 +6,7 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
     <section className=" flex flex-col items-center justify-center gap-10 pt-20 pb-10">
-      <footer className="container flex flex-col md:flex-row items-start justify-between flex-wrap mb-10">
+      <footer className="container flex flex-col gap-10 md:flex-row items-start md:justify-between flex-wrap mb-10">
         <Logo />
 
         {footerLinks.map((footerLink) => (

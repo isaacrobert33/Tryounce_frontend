@@ -4,11 +4,12 @@ export const OnboardingType = [
   {
     icon: ClientIcon,
     title: "As a Client",
-    description: "Consectetur euismod velit dignissim",
+    description:
+      "Connect with top freelancers and bring your projects to life.",
   },
   {
     icon: TalentIcon,
     title: "As a Talent",
-    description: "Consectetur euismod velit dignissim",
+    description: "Showcase your skills and unlock new opportunities.",
   },
 ];

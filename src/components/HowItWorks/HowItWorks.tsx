@@ -3,7 +3,7 @@ import { SpecialBtn, SpecialHeading } from "../../components/index";
 
 export default function HowItWorks() {
   return (
-    <section className="container py-20">
+    <section id="howitworks" className="container py-20">
       <div className="flex flex-col items-center gap-2">
         <SpecialBtn>HOW IT WORKS</SpecialBtn>
         <SpecialHeading>What's Possible with Ounce?</SpecialHeading>

@@ -3,7 +3,7 @@ import { SpecialBtn, SpecialHeading, Accordion } from "../../components/index";
 
 export default function FAQs() {
   return (
-    <section className="container py-10 pb-20">
+    <section id="faqs" className="container py-10 pb-20">
       <div className="flex flex-col items-center gap-3">
         <SpecialBtn>FREQUENTLY ASKED QUESTIONS</SpecialBtn>
         <SpecialHeading>Got questions? We&apos;ve got answers!</SpecialHeading>

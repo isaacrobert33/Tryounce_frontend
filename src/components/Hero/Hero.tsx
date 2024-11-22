@@ -41,20 +41,19 @@ export default function Hero() {
         >
           Join Thousands of Freelancers Today
         </motion.button>
-        <SpecialHeading
-          className="text-black !font-semibold lg:!text-[64px] text-left lg:!leading-[67px]"
-        >
+        <SpecialHeading className="text-black !font-semibold lg:!text-[64px] text-left !leading-[40px] !sm:leading-[50px] md:!leading-[60px] lg:!leading-[70px]">
           Work without limits, <br />
           Grow without borders.
         </SpecialHeading>
         <motion.p
-          className="text-[#6C6C6C] font-normal text-base sm:text-xl text-center leading-3"
+          className="text-[#6C6C6C] font-normal text-base sm:text-xl text-center leading-5 mt-3"
           variants={itemVariants}
         >
           Where talents and the world collaborate, grow and thrive together
         </motion.p>
         <motion.button
-          className="bg-black text-white rounded-full px-5 py-3 cursor-pointer leading-[22px] text-center" onClick={() => navigate('/onboarding')}
+          className="bg-black text-white rounded-full px-5 py-3 cursor-pointer leading-[22px] text-center mt-3"
+          onClick={() => navigate("/onboarding")}
           variants={itemVariants}
         >
           Create Account

@@ -21,7 +21,7 @@ export default function Home() {
       <Header />
       <Hero />
 
-      <section className="container py-20">
+      <section className="container py-10">
         <img
           src={JobPageScreenShot}
           alt="job page ss"

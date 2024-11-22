@@ -14,9 +14,9 @@ import {
 } from "../assets/svgs/index";
 
 export const navLinks = [
-  { pathname: "How it Works", path: "/" },
-  { pathname: "Categories", path: "/" },
-  { pathname: "FAQs", path: "/" },
+  { pathname: "How it Works", path: "#howitworks" },
+  { pathname: "Categories", path: "#categories" },
+  { pathname: "FAQs", path: "#faqs" },
 ];
 
 export const footerLinks = [

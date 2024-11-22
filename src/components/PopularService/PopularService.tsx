@@ -3,7 +3,7 @@ import { popularService } from "../../constants/app.constants";
 
 export default function PopularService() {
   return (
-    <section className="container py-40">
+    <section id="categories" className="container py-40">
       <div className="relative">
         <SpecialHeading>Popular Services</SpecialHeading>
 
