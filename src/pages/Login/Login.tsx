@@ -12,21 +12,62 @@ import {
 
 import { AppleIcon, GoogleIcon } from "../../assets/svgs/index";
 import useAppNavigation from "../../hooks/navigation/useAppNavigation";
-
+import axios from "axios";
+import { useMessage } from "../../hooks/Message/MessageContext";
+import {
+  useState
+} from "react";
+import { Loader } from "../../components/index";
 interface FormValues {
   email: string;
   password: string;
 }
 
 function Login() {
+  const { showMessage } = useMessage();
+  const [loading, setLoading] = useState<boolean>(false)
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
 
-  function onSubmit(data: FormValues): void {
-    console.log("Logins Submitted:", data);
+  async function onSubmit(data: FormValues) {
+    try {
+      if (data.email && data.password) {
+        setLoading(true)
+        const apiEndpoint = import.meta.env.BASE_URL + "/api/v1/auth/login/";
+
+        const response = await axios.post(apiEndpoint,
+          {
+            email: data.email,
+            password: data.password
+          },
+          { headers: { 'Content-Type': 'application/json' } })
+        // console.log(response  +"     tessssst");
+        
+        if (response.data.success) {
+          console.log(response);
+
+          showMessage('success', "user logged in")
+        }
+      }
+      else {
+        setLoading(false)
+        showMessage('error', "error logging in")
+      }
+    } catch (error: any) {
+      setLoading(false)
+      console.log(error.response.data.error[0].details);
+      
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.email || error.response.data.message || "An unexpected error occurred.";
+        showMessage("error", error.response.data.error[0].details);
+      } else {
+        console.error("Unknown error:", error);
+        showMessage("error", "An error occurred while creating your account.");
+      }
+    }
   }
 
   const { navigateToCreateAccount, navigateToForgotPassword } =
@@ -98,7 +139,7 @@ function Login() {
                 type="checkbox"
                 errors={errors}
                 className="login-checkbox"
-                // onChange={() => handleCheckboxChange("isIndividual")}
+              // onChange={() => handleCheckboxChange("isIndividual")}
               />
               <GeneralText
                 onclick={() => navigateToForgotPassword()}
@@ -108,8 +149,8 @@ function Login() {
               </GeneralText>
             </div>
 
-            <Button type="submit" className="bg-green-200">
-              Login
+            <Button type="submit" className="bg-green-200" disabled={loading}   >
+              {loading ? <Loader width="10" height="10" color="white" /> : "Login"}
             </Button>
 
             <Divider />

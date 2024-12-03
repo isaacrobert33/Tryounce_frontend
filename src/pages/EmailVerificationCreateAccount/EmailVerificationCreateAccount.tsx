@@ -15,8 +15,8 @@ import {
 import useAppNavigation from "../../hooks/navigation/useAppNavigation";
 
 export default function EmailVerificationCreateAccount() {
-  const [VerificationSuccessfull, setVerificationSuccessfull] = useState(false);
-  //   const [verificationSucess, setVerificationSuccess] = useState(true);
+  // const [VerificationSuccessfull, setVerificationSuccessfull] = useState(false);
+  const [VerificationSuccessfull, setVerificationSuccessfull] = useState(true);
   const { navigateToCreateAccount } = useAppNavigation();
 
   function handleCloseVerificationStatus() {
