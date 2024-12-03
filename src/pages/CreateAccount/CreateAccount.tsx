@@ -13,9 +13,11 @@ import {
 } from "../../components/index";
 import { useState } from "react";
 import useAppNavigation from "../../hooks/navigation/useAppNavigation";
+import { Loader } from "../../components/index";
+import { useMessage } from "../../hooks/Message/MessageContext";
 
 interface FormValues {
-  email:string,
+  email: string;
   phoneNumber: string;
   password: string;
   isIndividual: boolean;
@@ -23,9 +25,10 @@ interface FormValues {
 }
 
 export default function CreateAccount() {
+  const { showMessage } = useMessage();
   const [checkboxError, setCheckboxError] = useState<string | null>(null);
-
   const { navigateToLogin } = useAppNavigation();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const {
     register,
@@ -34,30 +37,54 @@ export default function CreateAccount() {
     formState: { errors },
   } = useForm<FormValues>();
 
-  function onSubmit(data: FormValues): void {
+  async function onSubmit(data: FormValues): Promise<void> {
+    
     if (!data.isIndividual && !data.isGroup) {
       setCheckboxError("Please select one of the options.");
     } else if (data.isIndividual && data.isGroup) {
       setCheckboxError("Only one option can be selected.");
     } else {
       setCheckboxError(null);
-       // API endpoint to create an account
-      const apiEndpoint = "https://ounce-backend.onrender.com/api/v1/auth/register/client/";
+      const apiEndpoint =import.meta.env.BASE_URL + "/api/v1/auth/register/talent/";
 
-  axios
-    .post(apiEndpoint, {
-      email: data.email,
-      phoneNumber: data.phoneNumber,
-      password: data.password,
-    },{headers:{"Content-Type" : "Application-type" }})
-    .then((response) => {
-      console.log("Account created successfully:", response.data);
-      // Redirect or show success message
-    })
-    .catch((error) => {
-      console.error("Error creating account:", error.response?.data || error.message);
-      // Show error feedback
-    });
+      if (data.isIndividual) {
+        try {
+          setLoading(true);
+
+          const response = await axios.post(
+            apiEndpoint,
+            {
+              email: data.email,
+              phone_number: data.phoneNumber,
+              password: data.password,
+            },
+            { headers: { "Content-Type": "application/json" } }
+          );
+          console.log(response);
+          
+          if (response.data.success) {
+            console.log("account created");
+            
+            showMessage("success", "Account created successfully");
+            navigateToLogin()
+          } else {
+            showMessage("error", response.data.message || "Account creation failed.");
+            console.error("Account creation failed:", response.data);
+          }
+        } catch (error: any) {
+          if (error.response && error.response.data) {
+            const errorMessage = error.response.data.email || error.response.data.message || "An unexpected error occurred.";
+            showMessage("error", errorMessage);
+          } else {
+            console.error("Unknown error:", error);
+            showMessage("error", "An error occurred while creating your account.");
+          }
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        showMessage("error", "Group account creation is currently unavailable. Please try again later.");
+      }
     }
   }
 
@@ -148,11 +175,10 @@ export default function CreateAccount() {
 
             <Divider />
 
-
             <Input
-              name="Email"
-              label="email"
-              placeholder="Email"
+              name="email"
+              label="Email"
+              placeholder="email"
               register={register}
               type="email"
               htmlFor="email"
@@ -163,9 +189,9 @@ export default function CreateAccount() {
                   message: "Please enter a valid email address.",
                 },
               }}
-
               errors={errors}
             />
+
             <Input
               name="phoneNumber"
               label="Phone Number"
@@ -218,9 +244,8 @@ export default function CreateAccount() {
               errors={errors}
             />
 
-
             <Button type="submit" className="bg-green-200">
-              Create Account
+              {loading ? <Loader width="20" height="20" color="white" /> : "Create Account"}
             </Button>
 
             <BtnText
