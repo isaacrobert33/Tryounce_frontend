@@ -45,7 +45,7 @@ export default function CreateAccount() {
       setCheckboxError("Only one option can be selected.");
     } else {
       setCheckboxError(null);
-      const apiEndpoint =import.meta.env.BASE_URL + "/api/v1/auth/register/talent/";
+      const apiEndpoint = import.meta.env.VITE_ApiBaseUrl + "/api/v1/auth/register/talent/";
 
       if (data.isIndividual) {
         try {

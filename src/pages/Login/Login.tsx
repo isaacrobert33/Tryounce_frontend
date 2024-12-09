@@ -36,7 +36,7 @@ function Login() {
     try {
       if (data.email && data.password) {
         setLoading(true)
-        const apiEndpoint = import.meta.env.BASE_URL + "/api/v1/auth/login/";
+        const apiEndpoint = import.meta.env.VITE_ApiBaseUrl + "/api/v1/auth/login/";
 
         const response = await axios.post(apiEndpoint,
           {
