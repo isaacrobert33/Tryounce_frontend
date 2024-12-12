@@ -13,11 +13,13 @@ import {
   VerificationStatus,
 } from "../../components/index";
 import useAppNavigation from "../../hooks/navigation/useAppNavigation";
+import { useUserContext } from "../../hooks/UserContext/UserContext";
 
 export default function EmailVerificationCreateAccount() {
   // const [VerificationSuccessfull, setVerificationSuccessfull] = useState(false);
   const [VerificationSuccessfull, setVerificationSuccessfull] = useState(true);
   const { navigateToCreateAccount } = useAppNavigation();
+  const { userEmail, setUserEmail } = useUserContext();
 
   function handleCloseVerificationStatus() {
     setVerificationSuccessfull(!VerificationSuccessfull);
@@ -35,14 +37,15 @@ export default function EmailVerificationCreateAccount() {
             className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] mb-2"
           />
           <Heading title="Check your email" />
-          <GeneralText className="text-center">
+          {/* <GeneralText className="text-center">
             We&apos;ve sent a one time password to oloyed***vid10@gmail.com
-          </GeneralText>
+          </GeneralText> */}
           <OTPVerification btnText="Verify" />
           <BtnText
             className="self-center mt-3"
             text1=" Didn’t receive code?"
             text2="Resend"
+          onClick={ ()=>{ setUserEmail("")}}
           />
           <div
             onClick={() => navigateToCreateAccount()}
@@ -56,7 +59,7 @@ export default function EmailVerificationCreateAccount() {
         </div>
       </div>
 
-      {VerificationSuccessfull ? (
+      {/* {VerificationSuccessfull ? (
         <VerificationStatus
           handleCloseVerificationStatus={handleCloseVerificationStatus}
           verificationIcon={VerificationSuccessfulIcon}
@@ -82,7 +85,7 @@ export default function EmailVerificationCreateAccount() {
           nextStep="TRY AGAIN"
           failed
         />
-      )}
+      )} */}
     </section>
   );
 }
