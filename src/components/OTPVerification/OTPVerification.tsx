@@ -1,16 +1,28 @@
 import { Button } from "../../components/index";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import axios from "axios";
+import { GeneralText } from "../../components/index";
+import { useMessage } from "../../hooks/Message/MessageContext";
+import useAppNavigation from "../../hooks/navigation/useAppNavigation";
+import { useUserContext } from "../../hooks/UserContext/UserContext";
 
 type OTPVerificationProps = {
   btnText: string;
+  initialEmail?: string;
 };
 
-export default function OtpVerification({ btnText }: OTPVerificationProps) {
+export default function OtpVerification({ btnText, initialEmail }: OTPVerificationProps) {
   const { handleSubmit, control, reset } = useForm();
-
+  const { showMessage } = useMessage();
   const [otp, setOtp] = useState<string[]>(new Array(4).fill(""));
   const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isResending, setIsResending] = useState<boolean>(false);
+  const [email, setEmail] = useState<string | null>(initialEmail || "");
+  const { navigateToLogin } = useAppNavigation();
+  const ApiBaseUrl = import.meta.env.VITE_ApiBaseUrl;
+  const { userEmail, setUserEmail } = useUserContext();
 
   useEffect(() => {
     if (otp.every((val) => val !== "")) {
@@ -22,114 +34,141 @@ export default function OtpVerification({ btnText }: OTPVerificationProps) {
     const value = e.target.value;
     if (value && isNaN(Number(value))) return false;
 
-    // Update OTP state
     setOtp([
       ...otp.map((data, indx) => (indx === index ? e.target.value : data)),
     ]);
 
-    // Automatically focus on the next input
     if (e.target.value && e.target.nextSibling) {
       const nextSibling = e.target.nextSibling as HTMLInputElement;
       nextSibling?.focus();
     }
   }
 
-  function handlePaste(e: React.ClipboardEvent<HTMLInputElement>) {
-    const value = e.clipboardData.getData("text");
-    if (value && isNaN(Number(value))) return false;
-
-    const updatedValue = value.toString().split("").slice(0, otp.length);
-    setOtp(updatedValue);
-
-    // To Remove focus when you paste
-    // const focusedInput = (
-    //   e.target as HTMLInputElement
-    // ).parentNode?.querySelector("input:focus");
-    // if (focusedInput) {
-    //   (focusedInput as HTMLInputElement).blur();
-    // }
-
-    const lastInput = (e.target as HTMLInputElement).parentNode?.querySelector(
-      'input[type="text"]:last-child'
-    );
-    if (lastInput) {
-      (lastInput as HTMLInputElement).focus();
+  async function onSubmit() {
+    if (!email) {
+      setError("Please provide your email address to proceed.");
+      return;
     }
-  }
 
-  function handleOnKeyDown(
-    e: React.KeyboardEvent<HTMLInputElement>,
-    index: number
-  ) {
-    if (e.key === "Backspace" && !otp[index]) {
-      // If the current input is empty, move focus to the previous input
-      if (index > 0) {
-        const prevInput = e.currentTarget.parentElement?.children[
-          index - 1
-        ] as HTMLInputElement;
-        prevInput.focus();
-        setOtp((prev) =>
-          prev.map((val, indx) => (indx === index - 1 ? "" : val))
-        );
-      }
-    } else if (e.key === "Backspace") {
-      // Delete the current input's value
-      setOtp((prev) => prev.map((val, indx) => (indx === index ? "" : val)));
-    }
-  }
-
-  function onSubmit(data: any) {
-    // Check if any input is empty
     if (otp.some((val) => val === "")) {
       setError("All fields must be filled in to verify the OTP.");
       return;
     }
 
     setError(""); // Clear error if inputs are valid
-    console.log("OTP Entered from Form: ", data.otp);
-    console.log("OTP Joined: ", otp.join(""));
+    const otpValue = otp.join("");
 
-    // After submission, clear the OTP input fields
-    reset(); // use react hook form reset function(not working)
-    setOtp(new Array(4).fill("")); // Optionally clear state-based OTP too
+    setIsLoading(true);
+
+    try {
+      const response = await axios.post(
+        `${ApiBaseUrl}/api/v1/auth/users/verify/`,
+        { email, code: otpValue },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("OTP verification successful:", response.data);
+      showMessage("success", "Email validated successfully");
+      navigateToLogin();
+    } catch (err: any) {
+      console.error("Error verifying OTP:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Failed to verify OTP");
+      showMessage("error", err.response?.data?.message || "Failed to verify OTP");
+    } finally {
+      setIsLoading(false);
+      setOtp(new Array(4).fill("")); // Clear OTP input fields
+    }
+  }
+
+  async function handleEmailSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const emailInput = (e.currentTarget.elements.namedItem("email") as HTMLInputElement).value;
+    if (!emailInput) {
+      setError("Email is required to proceed.");
+      return;
+    }
+
+    setIsResending(true);
+    try {
+      const response = await axios.post(
+        `${ApiBaseUrl}/api/v1/auth/users/verification/resend/`,
+        { email: emailInput },
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("OTP sent successfully", response.data);
+      showMessage("success", "OTP sent successfully");
+      setEmail(emailInput);
+      setUserEmail(emailInput);
+      setError("");
+    } catch (err: any) {
+      console.error("Error resending OTP:", err.response?.data || err.message);
+      setError(err.response?.data?.message || "Failed to resend OTP");
+      showMessage("error", err.response?.data?.message || "Failed to resend OTP");
+    } finally {
+      setIsResending(false);
+    }
   }
 
   return (
-    <form
-      className="w-full flex flex-col gap-6 mt-10"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="flex items-center justify-center space-x-4 md:space-x-10 w-full">
-        {otp.map((_, index) => (
-          <Controller
-            key={index}
-            name={`otp.${index}`} // Controller name tied to index
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                value={otp[index]} // Use otp state for value
-                onChange={(e) => {
-                  handleChange(e, index);
-                  field.onChange(e); // Update React Hook Form
-                }}
-                onPaste={(e) => handlePaste(e)}
-                onKeyDown={(e) => handleOnKeyDown(e, index)}
-                type="text" //can also use password
-                maxLength={1}
-                autoComplete="off"
-                className="border border-black font-manrope text-[24px] sm:text-[27px] font-medium text-black leading-[18px] outline-none text-center w-[50px] h-[50px] md:w-[60px] md:h-[60px] rounded-full focus:border focus:border-green"
-              />
-            )}
+    <div className="w-full flex flex-col gap-6 mt-10">
+      {!userEmail ? (
+        <form onSubmit={handleEmailSubmit} className="flex flex-col items-center gap-4">
+          <GeneralText className="text-center">
+            {error ? error : "Please enter your email address to receive an OTP."}
+          </GeneralText>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter your email"
+            className="border border-black px-4 py-2 rounded-md w-full max-w-md"
           />
-        ))}
-      </div>
-
-      {error && <p className="text-red-500 text-center text-sm">{error}</p>}
-
-      <Button type="submit" className="bg-green-200 outline-none">
-        {btnText}
-      </Button>
-    </form>
+          <Button
+            type="submit"
+            className={`bg-green-200 outline-none ${isResending ? "opacity-50" : ""}`}
+            disabled={isResending}
+          >
+            {isResending ? "Sending..." : "Submit Email"}
+          </Button>
+        </form>
+      ) : (
+        <form className="flex flex-col gap-6" onSubmit={handleSubmit(onSubmit)}>
+          <p className="text-center">
+            {userEmail
+              ? `An OTP has been sent to ${userEmail}. Please enter it below.`
+              : "Provide your email to receive an OTP."}
+          </p>
+          <div className="flex items-center justify-center space-x-4 md:space-x-10 w-full">
+            {otp.map((_, index) => (
+              <Controller
+                key={index}
+                name={`otp.${index}`}
+                control={control}
+                render={({ field }) => (
+                  <input
+                    {...field}
+                    value={otp[index]}
+                    onChange={(e) => {
+                      handleChange(e, index);
+                      field.onChange(e);
+                    }}
+                    type="text"
+                    maxLength={1}
+                    autoComplete="off"
+                    className="border text-center rounded-md w-[50px] h-[50px]"
+                  />
+                )}
+              />
+            ))}
+          </div>
+          {error && <p className="text-red-500 text-center text-sm">{error}</p>}
+          <Button
+            type="submit"
+            className={`bg-green-200 outline-none ${isLoading ? "opacity-50" : ""}`}
+            disabled={isLoading}
+          >
+            {isLoading ? "Verifying..." : btnText}
+          </Button>
+        </form>
+      )}
+    </div>
   );
 }

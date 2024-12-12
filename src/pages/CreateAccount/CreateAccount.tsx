@@ -15,7 +15,7 @@ import { useState } from "react";
 import useAppNavigation from "../../hooks/navigation/useAppNavigation";
 import { Loader } from "../../components/index";
 import { useMessage } from "../../hooks/Message/MessageContext";
-
+import { useUserContext } from "hooks/UserContext/UserContext";
 interface FormValues {
   email: string;
   phoneNumber: string;
@@ -24,12 +24,14 @@ interface FormValues {
   isGroup: boolean;
 }
 
+
+
 export default function CreateAccount() {
   const { showMessage } = useMessage();
   const [checkboxError, setCheckboxError] = useState<string | null>(null);
-  const { navigateToLogin } = useAppNavigation();
+  const { navigateToLogin, navigateToVerifyEmail } = useAppNavigation();
   const [loading, setLoading] = useState<boolean>(false);
-
+  const { userEmail, setUserEmail } = useUserContext()
   const {
     register,
     handleSubmit,
@@ -38,7 +40,7 @@ export default function CreateAccount() {
   } = useForm<FormValues>();
 
   async function onSubmit(data: FormValues): Promise<void> {
-    
+
     if (!data.isIndividual && !data.isGroup) {
       setCheckboxError("Please select one of the options.");
     } else if (data.isIndividual && data.isGroup) {
@@ -61,12 +63,13 @@ export default function CreateAccount() {
             { headers: { "Content-Type": "application/json" } }
           );
           console.log(response);
-          
+
           if (response.data.success) {
             console.log("account created");
-            
+
             showMessage("success", "Account created successfully");
-            navigateToLogin()
+            setUserEmail(data.email);
+            navigateToVerifyEmail();
           } else {
             showMessage("error", response.data.message || "Account creation failed.");
             console.error("Account creation failed:", response.data);

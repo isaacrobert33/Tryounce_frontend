@@ -7,6 +7,9 @@ export default function useNavigation() {
   function navigateToHome() {
     navigate(APP_ROUTES.Home);
   }
+  function navigateToVerifyEmail() {
+    navigate(APP_ROUTES.EmailVerificationCreateAccount)
+  }
 
   function navigateToCreateAccount() {
     navigate(APP_ROUTES.CreateAccount);
@@ -24,5 +27,6 @@ export default function useNavigation() {
     navigateToCreateAccount,
     navigateToLogin,
     navigateToForgotPassword,
+    navigateToVerifyEmail
   };
 }
