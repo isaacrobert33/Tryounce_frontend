@@ -15,7 +15,7 @@ type OTPVerificationProps = {
 export default function OtpVerification({ btnText, initialEmail }: OTPVerificationProps) {
   const { handleSubmit, control, reset } = useForm();
   const { showMessage } = useMessage();
-  const [otp, setOtp] = useState<string[]>(new Array(4).fill(""));
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill("")); // Update to 6 input boxes
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isResending, setIsResending] = useState<boolean>(false);
@@ -75,7 +75,7 @@ export default function OtpVerification({ btnText, initialEmail }: OTPVerificati
       showMessage("error", err.response?.data?.message || "Failed to verify OTP");
     } finally {
       setIsLoading(false);
-      setOtp(new Array(4).fill("")); // Clear OTP input fields
+      setOtp(new Array(6).fill("")); // Clear OTP input fields
     }
   }
 
