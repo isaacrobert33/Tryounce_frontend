@@ -15,7 +15,7 @@ type OTPVerificationProps = {
 export default function OtpVerification({ btnText, initialEmail }: OTPVerificationProps) {
   const { handleSubmit, control, reset } = useForm();
   const { showMessage } = useMessage();
-  const [otp, setOtp] = useState<string[]>(new Array(4).fill(""));
+  const [otp, setOtp] = useState<string[]>(new Array(6).fill("")); // Update to 6 input boxes
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isResending, setIsResending] = useState<boolean>(false);
@@ -45,7 +45,7 @@ export default function OtpVerification({ btnText, initialEmail }: OTPVerificati
   }
 
   async function onSubmit() {
-    if (!email) {
+    if (!userEmail) {
       setError("Please provide your email address to proceed.");
       return;
     }
@@ -63,19 +63,24 @@ export default function OtpVerification({ btnText, initialEmail }: OTPVerificati
     try {
       const response = await axios.post(
         `${ApiBaseUrl}/api/v1/auth/users/verify/`,
-        { email, code: otpValue },
+        { email: userEmail, code: otpValue },
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("OTP verification successful:", response.data);
+
+      // Access the main response data here:
+      const mainResponseData = response.data;
+
+      console.log("OTP verification successful:", mainResponseData);
       showMessage("success", "Email validated successfully");
       navigateToLogin();
     } catch (err: any) {
-      console.error("Error verifying OTP:", err.response?.data || err.message);
+      const errorMessage = err.response.data.error[0].message;
+      console.error("Error verifying OTP:", errorMessage);
       setError(err.response?.data?.message || "Failed to verify OTP");
-      showMessage("error", err.response?.data?.message || "Failed to verify OTP");
+      showMessage("error", errorMessage || "Failed to verify OTP");
     } finally {
       setIsLoading(false);
-      setOtp(new Array(4).fill("")); // Clear OTP input fields
+      setOtp(new Array(6).fill("")); // Clear OTP input fields
     }
   }
 
@@ -88,16 +93,20 @@ export default function OtpVerification({ btnText, initialEmail }: OTPVerificati
     }
 
     setIsResending(true);
+    setEmail(emailInput)
     try {
       const response = await axios.post(
         `${ApiBaseUrl}/api/v1/auth/users/verification/resend/`,
-        { email: emailInput },
+        { email },
         { headers: { "Content-Type": "application/json" } }
       );
       console.log("OTP sent successfully", response.data);
       showMessage("success", "OTP sent successfully");
+      console.log("logging the state ")
+      console.log(emailInput)
       setEmail(emailInput);
       setUserEmail(emailInput);
+      console.log(userEmail);
       setError("");
     } catch (err: any) {
       console.error("Error resending OTP:", err.response?.data || err.message);
